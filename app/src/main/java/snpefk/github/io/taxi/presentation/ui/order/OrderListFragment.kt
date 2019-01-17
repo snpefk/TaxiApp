@@ -17,10 +17,11 @@ import kotlinx.android.synthetic.main.item_order.view.*
 import org.threeten.bp.format.DateTimeFormatter
 import snpefk.github.io.taxi.R
 import snpefk.github.io.taxi.domain.entity.Order
-import snpefk.github.io.taxi.presentation.presenters.order.OrderListPresenter
-import snpefk.github.io.taxi.presentation.presenters.order.OrderListView
+import snpefk.github.io.taxi.presentation.presenters.order.list.OrderListPresenter
+import snpefk.github.io.taxi.presentation.presenters.order.list.OrderListView
 
-class OrderListFragment : MvpAppCompatFragment(), OrderListView {
+class OrderListFragment : MvpAppCompatFragment(),
+    OrderListView {
 
     @InjectPresenter
     lateinit var presenter: OrderListPresenter

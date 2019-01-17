@@ -1,4 +1,4 @@
-package snpefk.github.io.taxi.presentation.presenters.order
+package snpefk.github.io.taxi.presentation.presenters.order.list
 
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
