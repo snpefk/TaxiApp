@@ -1,5 +1,6 @@
 package snpefk.github.io.taxi.presentation.ui.order
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -14,6 +15,9 @@ import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.fragment_list_order.*
+import kotlinx.android.synthetic.main.item_order.view.*
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import snpefk.github.io.taxi.R
 import snpefk.github.io.taxi.domain.entity.Order
 import snpefk.github.io.taxi.presentation.presenters.order.OrderListPresenter
@@ -50,12 +54,13 @@ class OrderListFragment : MvpAppCompatFragment(), OrderListView {
     private class OrderAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var orders: List<Order> = emptyList()
+        private val formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy, в HH:mm") // move out
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view: View = LayoutInflater.from(parent.context)
-                .inflate(android.R.layout.simple_list_item_2, parent, false)
+                .inflate(R.layout.item_order, parent, false)
 
-            return OrderViewHolder(view)
+            return OrderViewHolder(view, formatter)
         }
 
         override fun getItemCount(): Int = orders.size
@@ -70,13 +75,17 @@ class OrderListFragment : MvpAppCompatFragment(), OrderListView {
             notifyDataSetChanged() // potential bottleneck replace with DiffUtils
         }
 
-        private class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            private val text1: TextView = itemView.findViewById(android.R.id.text1)
-            private val text2: TextView = itemView.findViewById(android.R.id.text2)
+        private class OrderViewHolder(
+            itemView: View,
+            private val formatter: DateTimeFormatter
+        ) : RecyclerView.ViewHolder(itemView) {
 
+            @SuppressLint("SetTextI18n")
             fun bind(order: Order) {
-                text1.text = "${order.startAddress.address} - ${order.endAddress.address}"
-                text2.text = "${order.orderTime}"
+                // support other combination of address
+                itemView.tvAddress.text = "${order.startAddress.address} — ${order.endAddress.address}"
+                itemView.tvOrderTime.text = order.orderTime.format(formatter)
+                itemView.tvPrice.text = "${order.price.amount.movePointLeft(2)} ${order.price.currency.symbol}"
             }
         }
     }
