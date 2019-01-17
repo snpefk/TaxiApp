@@ -84,5 +84,7 @@ class OrderListFragment : Fragment() {
             }
         }
     }
-
+    companion object {
+        const val FRAGMENT_NAME = "OrderListFragment"
+    }
 }
