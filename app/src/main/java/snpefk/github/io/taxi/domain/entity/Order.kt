@@ -7,6 +7,6 @@ class Order(
     val startAddress: Address,
     val endAddress: Address,
     val price: Price,
-    val dateTime: LocalDateTime,
+    val orderTime: LocalDateTime,
     val vehicle: Vehicle
 )
