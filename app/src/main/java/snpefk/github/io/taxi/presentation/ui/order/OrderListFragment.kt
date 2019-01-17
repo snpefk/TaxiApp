@@ -25,7 +25,7 @@ class OrderListFragment : MvpAppCompatFragment(), OrderListView {
     @InjectPresenter
     lateinit var presenter: OrderListPresenter
 
-    private val orderAdapter = OrderAdapter()
+    private val orderAdapter = OrderAdapter(presenter::onOrderClicked)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_list_order, container, false)
@@ -48,16 +48,26 @@ class OrderListFragment : MvpAppCompatFragment(), OrderListView {
             .show()
     }
 
-    private class OrderAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun openDetails(order: Order) {
+        val fragmentManager = activity?.supportFragmentManager ?: return
+        val fragment = OrderDetailsFragment.newInstance(order)
+
+        fragmentManager.beginTransaction()
+            .replace(R.id.flContent, fragment, OrderDetailsFragment.FRAGMENT_NAME)
+            .addToBackStack(OrderDetailsFragment.FRAGMENT_NAME)
+            .commit()
+    }
+
+    private class OrderAdapter(private val onClick: (Order) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var orders: List<Order> = emptyList()
-        private val formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy")
+        private val formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy") // todo: replace with inject
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view: View = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_order, parent, false)
 
-            return OrderViewHolder(view, formatter)
+            return OrderViewHolder(view, onClick, formatter)
         }
 
         override fun getItemCount(): Int = orders.size
@@ -69,20 +79,21 @@ class OrderListFragment : MvpAppCompatFragment(), OrderListView {
 
         fun setData(orders: List<Order>) {
             this.orders = orders
-            notifyDataSetChanged() // potential bottleneck replace with DiffUtils
+            notifyDataSetChanged() // potential bottleneck; replace with DiffUtils
         }
 
         private class OrderViewHolder(
             itemView: View,
+            private val onClick: (Order) -> Unit,
             private val formatter: DateTimeFormatter
         ) : RecyclerView.ViewHolder(itemView) {
 
             @SuppressLint("SetTextI18n")
             fun bind(order: Order) {
-                // support other combination of address
                 itemView.tvAddress.text = "${order.startAddress.address} — ${order.endAddress.address}"
                 itemView.tvOrderTime.text = order.orderTime.format(formatter)
                 itemView.tvPrice.text = "${order.price.amount.movePointLeft(2)} ${order.price.currency.symbol}"
+                itemView.setOnClickListener { onClick(order) }
             }
         }
     }
