@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import kotlinx.android.synthetic.main.fragment_details_order.*
 import kotlinx.android.synthetic.main.item_order.*
 import org.threeten.bp.format.DateTimeFormatter
 import snpefk.github.io.taxi.R
@@ -35,6 +36,8 @@ class OrderDetailsFragment : MvpAppCompatFragment(), OrderDetailsView {
         tvAddress.text = "${order.startAddress.address} — ${order.endAddress.address}"
         tvOrderTime.text = order.orderTime.format(formatter)
         tvPrice.text = "${order.price.amount.movePointLeft(2)} ${order.price.currency.symbol}"
+        tvVehicle.text = "${order.vehicle.modelName} «${order.vehicle.regNumber}»"
+        tvDriver.text = order.vehicle.driverName
     }
 
     companion object {

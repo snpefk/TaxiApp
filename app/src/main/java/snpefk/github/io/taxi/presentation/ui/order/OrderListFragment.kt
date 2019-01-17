@@ -26,7 +26,7 @@ class OrderListFragment : MvpAppCompatFragment(),
     @InjectPresenter
     lateinit var presenter: OrderListPresenter
 
-    private val orderAdapter = OrderAdapter(presenter::onOrderClicked)
+    private val orderAdapter by lazy { OrderAdapter(presenter::onOrderClicked) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_list_order, container, false)
