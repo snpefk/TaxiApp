@@ -4,6 +4,6 @@ import java.math.BigDecimal
 import java.util.*
 
 class Price(
-    val amound: BigDecimal,
+    val amount: BigDecimal,
     val currency: Currency
 )
