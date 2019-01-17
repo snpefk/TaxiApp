@@ -54,7 +54,7 @@ class OrderListFragment : MvpAppCompatFragment(), OrderListView {
     private class OrderAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var orders: List<Order> = emptyList()
-        private val formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy, в HH:mm") // move out
+        private val formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy")
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view: View = LayoutInflater.from(parent.context)
