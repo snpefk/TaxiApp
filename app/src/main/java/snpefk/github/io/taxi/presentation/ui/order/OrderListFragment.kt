@@ -11,19 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
+import com.arellomobile.mvp.MvpAppCompatFragment
+import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.fragment_list_order.*
-import snpefk.github.io.taxi.BuildConfig
 import snpefk.github.io.taxi.R
 import snpefk.github.io.taxi.domain.entity.Order
-import snpefk.github.io.taxi.domain.interactor.OrderInteractor
+import snpefk.github.io.taxi.presentation.presenters.order.OrderListPresenter
+import snpefk.github.io.taxi.presentation.presenters.order.OrderListView
 
+class OrderListFragment : MvpAppCompatFragment(), OrderListView {
 
-class OrderListFragment : Fragment() {
+    @InjectPresenter
+    lateinit var presenter: OrderListPresenter
 
     private val orderAdapter = OrderAdapter()
-    private val interactor: OrderInteractor = OrderInteractor()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_list_order, container, false)
@@ -35,18 +36,14 @@ class OrderListFragment : Fragment() {
         rvOrders.adapter = orderAdapter
         rvOrders.layoutManager = LinearLayoutManager(activity)
         rvOrders.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-
-        interactor.getAllSortedByDateTime()
-            .toList()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(onSuccess = orderAdapter::setData, onError = ::handleError)
     }
 
-    private fun handleError(t: Throwable) {
-        if (BuildConfig.DEBUG) {
-            t.printStackTrace()
-        }
-        Snackbar.make(view!!,"Не удалось получить данные", Toast.LENGTH_SHORT)
+    override fun showOrders(orders: List<Order>) {
+        orderAdapter.setData(orders)
+    }
+
+    override fun showMsg(msg: String) {
+        Snackbar.make(view!!, msg, Toast.LENGTH_SHORT)
             .show()
     }
 
@@ -83,6 +80,7 @@ class OrderListFragment : Fragment() {
             }
         }
     }
+
     companion object {
         const val FRAGMENT_NAME = "OrderListFragment"
     }
