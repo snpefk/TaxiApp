@@ -89,12 +89,18 @@ class OrderListFragment : MvpAppCompatFragment(),
             private val formatter: DateTimeFormatter
         ) : RecyclerView.ViewHolder(itemView) {
 
+            lateinit var order: Order
+
+            init {
+                itemView.setOnClickListener { onClick(order) }
+            }
+
             @SuppressLint("SetTextI18n")
             fun bind(order: Order) {
+                this.order = order
                 itemView.tvAddress.text = "${order.startAddress.address} — ${order.endAddress.address}"
                 itemView.tvOrderTime.text = order.orderTime.format(formatter)
                 itemView.tvPrice.text = "${order.price.amount.movePointLeft(2)} ${order.price.currency.symbol}"
-                itemView.setOnClickListener { onClick(order) }
             }
         }
     }
