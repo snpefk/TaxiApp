@@ -1,7 +1,9 @@
 package snpefk.github.io.taxi.presentation.ui.order
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +24,10 @@ class OrderDetailsFragment : MvpAppCompatFragment(), OrderDetailsView {
     lateinit var presenter: OrderDetailsPresenter
 
     @ProvidePresenter
-    fun providePresenter(): OrderDetailsPresenter = arguments?.getParcelable<Order>(ORDER_KEY)
-        ?.let(::OrderDetailsPresenter) ?: throw IllegalArgumentException("No value passed for order")
+    fun providePresenter(): OrderDetailsPresenter {
+        val order: Order = arguments?.getParcelable(ORDER_KEY)?: throw IllegalArgumentException("No value passed for order")
+        return OrderDetailsPresenter(order)
+    }
 
     // todo: pass as dependency
     private val formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy")
@@ -38,6 +42,15 @@ class OrderDetailsFragment : MvpAppCompatFragment(), OrderDetailsView {
         tvPrice.text = "${order.price.amount.movePointLeft(2)} ${order.price.currency.symbol}"
         tvVehicle.text = "${order.vehicle.modelName} «${order.vehicle.regNumber}»"
         tvDriver.text = order.vehicle.driverName
+    }
+
+    override fun showPhoto(bitmap: Bitmap) {
+        ivPhoto.setImageBitmap(bitmap)
+    }
+
+    override fun showMsg(msg: String) {
+        Snackbar.make(view!!, msg, Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     companion object {
