@@ -20,8 +20,7 @@ import snpefk.github.io.taxi.domain.entity.Order
 import snpefk.github.io.taxi.presentation.presenters.order.list.OrderListPresenter
 import snpefk.github.io.taxi.presentation.presenters.order.list.OrderListView
 
-class OrderListFragment : MvpAppCompatFragment(),
-    OrderListView {
+class OrderListFragment : MvpAppCompatFragment(), OrderListView {
 
     @InjectPresenter
     lateinit var presenter: OrderListPresenter
