@@ -6,7 +6,7 @@ import snpefk.github.io.taxi.domain.entity.Order
 
 @InjectViewState
 class OrderDetailsPresenter(
-    val order: Order
+    private val order: Order
 ) : MvpPresenter<OrderDetailsView>() {
 
     override fun onFirstViewAttach() {
