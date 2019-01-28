@@ -6,6 +6,6 @@ import snpefk.github.io.taxi.domain.entity.Order
 
 interface OrderApi {
 
-    @GET("careers/test/orders.json")
+    @GET("orders.json")
     fun getOrders(): Single<List<Order>>
 }

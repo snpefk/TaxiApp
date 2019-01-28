@@ -4,12 +4,13 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import snpefk.github.io.taxi.AppServiceLocator
 import snpefk.github.io.taxi.domain.entity.Order
 import snpefk.github.io.taxi.domain.interactor.OrderInteractor
 
 @InjectViewState
 class OrderListPresenter(
-    private val interactor: OrderInteractor = OrderInteractor()
+    private val interactor: OrderInteractor = AppServiceLocator.orderInteractor
 ) : MvpPresenter<OrderListView>() {
 
     override fun onFirstViewAttach() {
@@ -26,5 +27,4 @@ class OrderListPresenter(
     private fun handleError(t: Throwable) {
         viewState.showMsg("Не удалось получить данные")
     }
-
 }

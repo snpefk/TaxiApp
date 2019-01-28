@@ -6,7 +6,8 @@ import snpefk.github.io.taxi.data.repository.vehicle.VehicleRepository
 import snpefk.github.io.taxi.domain.entity.Vehicle
 
 class VehicleInteractor(
-    private val repository: VehicleRepository = VehicleRepository()
+    private val repository: VehicleRepository
 ) {
+
     fun getPhotoBy(vehicle: Vehicle): Single<Bitmap> = repository.getPhoto(vehicle)
 }

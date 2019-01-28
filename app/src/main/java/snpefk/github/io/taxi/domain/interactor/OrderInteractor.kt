@@ -5,7 +5,7 @@ import snpefk.github.io.taxi.data.repository.order.OrderRepository
 import snpefk.github.io.taxi.domain.entity.Order
 
 class OrderInteractor(
-    private val repository: OrderRepository = OrderRepository()
+    private val repository: OrderRepository
 ) {
 
     fun getAllSortedByDateTime(): Observable<Order> = repository.getAll()

@@ -4,13 +4,14 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import snpefk.github.io.taxi.AppServiceLocator
 import snpefk.github.io.taxi.domain.entity.Order
 import snpefk.github.io.taxi.domain.interactor.VehicleInteractor
 
 @InjectViewState
 class OrderDetailsPresenter(
     private val order: Order,
-    private val vehicleInteractor: VehicleInteractor = VehicleInteractor()
+    private val vehicleInteractor: VehicleInteractor = AppServiceLocator.vehicleInteractor
 ) : MvpPresenter<OrderDetailsView>() {
 
     override fun onFirstViewAttach() {

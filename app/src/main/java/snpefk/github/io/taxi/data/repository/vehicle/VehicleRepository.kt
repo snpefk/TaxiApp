@@ -5,13 +5,15 @@ import android.graphics.BitmapFactory
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
 import okhttp3.*
+import snpefk.github.io.taxi.data.cache.TimeBoundedCache
 import snpefk.github.io.taxi.domain.entity.Vehicle
 import java.io.IOException
 import java.io.InputStream
 
 class VehicleRepository(
-    private val baseUrl: String = "https://www.roxiemobile.ru/careers/test",
-    private val httpClient: OkHttpClient = OkHttpClient.Builder().build()
+    private val baseUrl: String,
+    private val httpClient: OkHttpClient,
+    private val cache: TimeBoundedCache<String, Bitmap>
 ) {
     fun getPhoto(vehicle: Vehicle): Single<Bitmap> {
         val subject = SingleSubject.create<Bitmap>()
