@@ -16,6 +16,10 @@ class VehicleRepository(
     private val cache: TimeBoundedCache<String, Bitmap>
 ) {
     fun getPhoto(vehicle: Vehicle): Single<Bitmap> {
+        cache[vehicle.photo]?.let{
+            return Single.just(it)
+        }
+
         val subject = SingleSubject.create<Bitmap>()
 
         val request = Request.Builder()
@@ -30,6 +34,7 @@ class VehicleRepository(
             override fun onResponse(call: Call, response: Response) {
                 val stream: InputStream? = response.body()?.byteStream()
                 val bitmap: Bitmap = BitmapFactory.decodeStream(stream)
+                cache[vehicle.photo] = bitmap
                 subject.onSuccess(bitmap)
             }
         })
