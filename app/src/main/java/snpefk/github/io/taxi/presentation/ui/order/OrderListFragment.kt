@@ -15,6 +15,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.fragment_list_order.*
 import kotlinx.android.synthetic.main.item_order.view.*
 import org.threeten.bp.format.DateTimeFormatter
+import snpefk.github.io.taxi.AppServiceLocator
 import snpefk.github.io.taxi.R
 import snpefk.github.io.taxi.domain.entity.Order
 import snpefk.github.io.taxi.presentation.presenters.order.list.OrderListPresenter
@@ -61,7 +62,7 @@ class OrderListFragment : MvpAppCompatFragment(), OrderListView {
     private class OrderAdapter(private val onClick: (Order) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var orders: List<Order> = emptyList()
-        private val formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy") // todo: replace with inject
+        private val formatter: DateTimeFormatter = AppServiceLocator.formatter
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view: View = LayoutInflater.from(parent.context)

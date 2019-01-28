@@ -7,6 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.CallAdapter
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import snpefk.github.io.taxi.data.cache.TimeBoundedCache
@@ -19,6 +20,7 @@ import snpefk.github.io.taxi.domain.interactor.VehicleInteractor
 
 // poor man choice dependency inversion
 object AppServiceLocator {
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd LLLL yyyy")
 
     // network dependency
     val baseUrl = "https://www.roxiemobile.ru/careers/test"
